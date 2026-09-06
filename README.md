@@ -14,3 +14,8 @@ Le tableau de bord génère un code distinct pour chaque séance. Les
 participants utilisent toujours le même QR code. Les réponses ne contiennent
 ni nom ni courriel ; elles sont transportées par des topics aléatoires et
 éphémères sur le serveur public `ntfy.sh`.
+
+Les questions sont pilotées une par une : sélectionner le QCM correspondant à
+la diapositive, ouvrir le vote, le fermer, puis révéler la correction. Le
+bouton **Nouvelle séance** crée un nouveau code et remet les compteurs à zéro
+pour le groupe suivant, sans mélanger les résultats.
