@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#414aba">
+  <title>ETC 2026 — Tableau de bord QCM</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">ETC 2026 · <span>TABLEAU DE BORD QCM</span></div>
+      <div class="privacy">Votes anonymes · résultats en direct</div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section id="pinGate" class="card admin-gate">
+      <div class="eyebrow">Accès formateur</div>
+      <h1 id="pinTitle">Créer votre code formateur</h1>
+      <p id="pinHelp" class="muted">Ce code protège le tableau de bord sur cet ordinateur.</p>
+      <form id="pinForm">
+        <input id="pinInput" type="password" inputmode="numeric" minlength="4" maxlength="8" autocomplete="off" placeholder="4 à 8 chiffres" required>
+        <button class="primary" type="submit">CONTINUER</button>
+      </form>
+      <p id="pinError" class="muted" role="alert"></p>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="admin-header">
+        <div><div class="eyebrow">Animation des cinq QCM</div><h1>Piloter les votes</h1></div>
+        <button id="lockButton" class="ghost">VERROUILLER</button>
+      </div>
+
+      <div class="admin-grid">
+        <aside>
+          <section class="card panel session-panel">
+            <h2>Code de séance</h2>
+            <div id="adminSessionCode" class="big-code">------</div>
+            <img class="qr-admin" src="QR_QCM_ETC2026.png" alt="QR code vers la page de vote ETC 2026">
+            <p class="small-note">Les participants scannent ce QR une seule fois, puis saisissent le code ci-dessus.</p>
+            <div class="button-stack">
+              <button id="newSessionButton" class="primary">NOUVELLE SÉANCE</button>
+              <button id="exportButton" class="ghost">EXPORTER LE CSV</button>
+            </div>
+            <select id="historySelect" class="history-select" aria-label="Séances précédentes"><option value="">Sessions précédentes…</option></select>
+            <div class="transport-note">Les messages ne contiennent ni nom ni courriel. Un identifiant aléatoire du navigateur permet de compter une seule réponse active par question.</div>
+          </section>
+        </aside>
+
+        <div>
+          <section class="card panel control-panel">
+            <h2>Question active</h2>
+            <select id="questionSelect" class="question-selector" aria-label="Choisir une question"></select>
+            <div id="activeQuestion" class="active-question"></div>
+            <div class="control-actions">
+              <button id="openButton" class="secondary">OUVRIR LE VOTE</button>
+              <button id="closeButton" class="ghost">FERMER</button>
+              <button id="revealButton" class="primary">RÉVÉLER</button>
+              <button id="resetQuestionButton" class="danger">RÉINITIALISER CETTE QUESTION</button>
+            </div>
+          </section>
+
+          <section class="card panel results-panel">
+            <div class="results-meta"><h2>Résultats en direct</h2><span id="responseCount" class="response-count">0 vote</span></div>
+            <div id="bars" class="bars"></div>
+            <div id="resultsExplanation" class="results-explanation hidden"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="questions.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
