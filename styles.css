@@ -123,6 +123,16 @@ a { color: var(--indigo); }
 .active-question { background: #f0f1fb; border-radius: 10px; margin-top: 12px; padding: 13px; }
 .active-question strong { color: var(--dark); display: block; }
 .active-question span { color: var(--grey); display: block; font-size: .77rem; margin-top: 4px; }
+.transport-status {
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 800;
+  margin-top: 10px;
+  padding: 9px 12px;
+}
+.transport-status.sending { background: #eef0fb; color: #414aba; }
+.transport-status.success { background: #e6f7f2; color: #187560; }
+.transport-status.error { background: #ffe9ee; color: #b52d4e; }
 .results-meta { align-items: center; display: flex; justify-content: space-between; margin-bottom: 13px; }
 .response-count { background: var(--yellow); border-radius: 8px; color: var(--dark); font-weight: 900; padding: 7px 10px; }
 .bars { display: grid; gap: 11px; }

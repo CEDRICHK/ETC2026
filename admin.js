@@ -1,7 +1,10 @@
 (function () {
   "use strict";
 
-  const NTFY = "https://ntfy.sh";
+  const NTFY_SERVERS = [
+    "https://ntfy.tedomum.fr",
+    "https://ntfy.hostux.net"
+  ];
   const PIN_KEY = "etc2026AdminPinHash";
   const SESSION_KEY = "etc2026AdminSession";
   const HISTORY_KEY = "etc2026AdminHistory";
@@ -24,6 +27,51 @@
 
   function topic(kind) {
     return `etc2026-${sessionData.code.toLowerCase()}-${kind}`;
+  }
+
+  function fetchWithTimeout(url, options = {}, timeout = 6000) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeout);
+    return fetch(url, { ...options, signal: controller.signal })
+      .finally(() => window.clearTimeout(timer));
+  }
+
+  async function publishEverywhere(channel, message) {
+    const results = await Promise.allSettled(NTFY_SERVERS.map(server =>
+      fetchWithTimeout(`${server}/${channel}`, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify(message)
+      })
+    ));
+    const delivered = results.filter(result =>
+      result.status === "fulfilled" && result.value.ok
+    ).length;
+    if (!delivered) throw new Error("Aucun relais disponible");
+    return delivered;
+  }
+
+  async function pollEverywhere(channel) {
+    const results = await Promise.allSettled(NTFY_SERVERS.map(async server => {
+      const response = await fetchWithTimeout(
+        `${server}/${channel}/json?poll=1&since=all`,
+        { cache: "no-store" }
+      );
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return parseMessages(await response.text());
+    }));
+    const available = results.filter(result => result.status === "fulfilled");
+    if (!available.length) throw new Error("Aucun relais disponible");
+    return {
+      messages: available.flatMap(result => result.value),
+      available: available.length
+    };
+  }
+
+  function setTransportStatus(kind, message) {
+    const status = document.getElementById("transportStatus");
+    status.className = `transport-status ${kind}`;
+    status.textContent = message;
   }
 
   async function digest(value) {
@@ -79,7 +127,13 @@
     const strong = document.createElement("strong");
     strong.textContent = question.title;
     const span = document.createElement("span");
-    const status = sessionData.open ? "Vote ouvert" : sessionData.reveal ? "Correction révélée" : "Vote fermé";
+    const status = sessionData.syncError
+      ? "NON TRANSMIS"
+      : sessionData.open
+        ? "Vote ouvert"
+        : sessionData.reveal
+          ? "Correction révélée"
+          : "Vote fermé";
     span.textContent = `${question.context} · ${status}`;
     box.append(strong, span);
   }
@@ -107,12 +161,24 @@
     };
     saveSession();
     renderActiveQuestion();
-    const response = await fetch(`${NTFY}/${topic("state")}`, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=UTF-8" },
-      body: JSON.stringify(state)
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    setTransportStatus("sending", "Transmission de la question…");
+    try {
+      const delivered = await publishEverywhere(topic("state"), state);
+      sessionData.syncError = false;
+      setTransportStatus(
+        "success",
+        delivered === NTFY_SERVERS.length
+          ? "Question synchronisée sur les téléphones."
+          : "Question synchronisée par le relais de secours."
+      );
+      renderActiveQuestion();
+      return true;
+    } catch (_) {
+      sessionData.syncError = true;
+      setTransportStatus("error", "Question non transmise — vérifiez la connexion puis recliquez sur OUVRIR.");
+      renderActiveQuestion();
+      return false;
+    }
   }
 
   function uniqueVotes(messages, question, epoch) {
@@ -166,9 +232,8 @@
     if (pollBusy || !sessionData) return;
     pollBusy = true;
     try {
-      const response = await fetch(`${NTFY}/${topic("votes")}/json?poll=1&since=all`, { cache: "no-store" });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      currentVotes = parseMessages(await response.text());
+      const relay = await pollEverywhere(topic("votes"));
+      currentVotes = relay.messages;
       renderResults();
     } catch (_) {
       document.getElementById("responseCount").textContent = "Reconnexion…";
@@ -179,8 +244,8 @@
 
   async function restoreState() {
     try {
-      const response = await fetch(`${NTFY}/${topic("state")}/json?poll=1&since=all`, { cache: "no-store" });
-      const states = parseMessages(await response.text())
+      const relay = await pollEverywhere(topic("state"));
+      const states = relay.messages
         .filter(item => item.kind === "state" && item.session === sessionData.code)
         .sort((a, b) => (a.ts || 0) - (b.ts || 0));
       const last = states.at(-1);
@@ -189,8 +254,18 @@
         sessionData.open = Boolean(last.open);
         sessionData.reveal = Boolean(last.reveal);
         sessionData.epochs[questions[last.question].id] = last.epoch || 1;
+        sessionData.syncError = false;
+        setTransportStatus("success", "Tableau de bord connecté.");
+      } else {
+        sessionData.open = false;
+        sessionData.reveal = false;
+        sessionData.syncError = true;
+        setTransportStatus("error", "Cette ancienne séance n’est pas encore synchronisée — cliquez sur OUVRIR LE VOTE.");
       }
-    } catch (_) { /* La session reste utilisable même sans état antérieur. */ }
+    } catch (_) {
+      sessionData.syncError = true;
+      setTransportStatus("error", "Relais indisponibles — les commandes ne seront pas transmises.");
+    }
     saveSession();
     renderAll();
   }
@@ -223,8 +298,8 @@
   }
 
   async function exportCsv() {
-    const response = await fetch(`${NTFY}/${topic("votes")}/json?poll=1&since=all`, { cache: "no-store" });
-    const messages = parseMessages(await response.text());
+    const relay = await pollEverywhere(topic("votes"));
+    const messages = relay.messages;
     const rows = [];
     const participantNumbers = new Map();
     questions.forEach(question => {

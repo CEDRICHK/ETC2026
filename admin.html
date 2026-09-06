@@ -29,7 +29,7 @@
 
     <section id="dashboard" class="hidden">
       <div class="admin-header">
-        <div><div class="eyebrow">Animation des cinq QCM</div><h1>Piloter les votes</h1></div>
+        <div><div class="eyebrow">Animation séquentielle · un QCM à la fois</div><h1>Piloter les votes</h1></div>
         <button id="lockButton" class="ghost">VERROUILLER</button>
       </div>
 
@@ -54,6 +54,7 @@
             <h2>Question active</h2>
             <select id="questionSelect" class="question-selector" aria-label="Choisir une question"></select>
             <div id="activeQuestion" class="active-question"></div>
+            <div id="transportStatus" class="transport-status">Connexion aux relais…</div>
             <div class="control-actions">
               <button id="openButton" class="secondary">OUVRIR LE VOTE</button>
               <button id="closeButton" class="ghost">FERMER</button>
@@ -72,7 +73,7 @@
     </section>
   </main>
 
-  <script src="questions.js"></script>
-  <script src="admin.js"></script>
+  <script src="questions.js?v=20260906b"></script>
+  <script src="admin.js?v=20260906b"></script>
 </body>
 </html>

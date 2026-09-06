@@ -1,7 +1,10 @@
 (function () {
   "use strict";
 
-  const NTFY = "https://ntfy.sh";
+  const NTFY_SERVERS = [
+    "https://ntfy.tedomum.fr",
+    "https://ntfy.hostux.net"
+  ];
   const questions = window.ETC_QUESTIONS;
   const joinView = document.getElementById("joinView");
   const participantView = document.getElementById("participantView");
@@ -23,6 +26,45 @@
 
   function topic(kind) {
     return `etc2026-${session.toLowerCase()}-${kind}`;
+  }
+
+  function fetchWithTimeout(url, options = {}, timeout = 6000) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeout);
+    return fetch(url, { ...options, signal: controller.signal })
+      .finally(() => window.clearTimeout(timer));
+  }
+
+  async function publishEverywhere(channel, message) {
+    const results = await Promise.allSettled(NTFY_SERVERS.map(server =>
+      fetchWithTimeout(`${server}/${channel}`, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify(message)
+      })
+    ));
+    const delivered = results.filter(result =>
+      result.status === "fulfilled" && result.value.ok
+    ).length;
+    if (!delivered) throw new Error("Aucun relais disponible");
+    return delivered;
+  }
+
+  async function pollEverywhere(channel) {
+    const results = await Promise.allSettled(NTFY_SERVERS.map(async server => {
+      const response = await fetchWithTimeout(
+        `${server}/${channel}/json?poll=1&since=all`,
+        { cache: "no-store" }
+      );
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return parseMessages(await response.text());
+    }));
+    const available = results.filter(result => result.status === "fulfilled");
+    if (!available.length) throw new Error("Aucun relais disponible");
+    return {
+      messages: available.flatMap(result => result.value),
+      available: available.length
+    };
   }
 
   function setConnection(ok, label) {
@@ -118,12 +160,7 @@
       ts: Date.now()
     };
     try {
-      const response = await fetch(`${NTFY}/${topic("votes")}`, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
-        body: JSON.stringify(message)
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      await publishEverywhere(topic("votes"), message);
       localStorage.setItem(savedKey, answer);
       feedback.className = "vote-feedback success";
       feedback.textContent = "Réponse enregistrée. Vous pouvez encore la modifier tant que le vote reste ouvert.";
@@ -137,10 +174,9 @@
     if (polling || !session) return;
     polling = true;
     try {
-      const response = await fetch(`${NTFY}/${topic("state")}/json?poll=1&since=all`, { cache: "no-store" });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const next = latestState(parseMessages(await response.text()));
-      setConnection(true, "Connecté");
+      const relay = await pollEverywhere(topic("state"));
+      const next = latestState(relay.messages);
+      setConnection(true, relay.available === NTFY_SERVERS.length ? "Connecté" : "Connecté · relais de secours");
       if (next && (!currentState || next.ts !== currentState.ts)) {
         currentState = next;
         renderState(next);
