@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ETC 2026 — Références HTS / HCS</title>
+  <style>
+    :root { --indigo:#414aba; --dark:#252d72; --yellow:#f3c62f; --cream:#f4efe7; --coral:#eb5576; --ink:#242738; --line:#d7d5db; }
+    * { box-sizing: border-box; }
+    body { background:var(--cream); color:var(--ink); font-family:Arial,Helvetica,sans-serif; line-height:1.5; margin:0; }
+    header { background:var(--indigo); color:#fff; padding:48px 22px 42px; }
+    header div, main, footer div { margin:auto; max-width:980px; }
+    .eyebrow { color:var(--yellow); font-size:.78rem; font-weight:800; letter-spacing:.1em; margin:0 0 12px; }
+    h1 { font-size:clamp(2rem,6vw,3.7rem); line-height:1.05; margin:0 0 14px; }
+    header p { font-size:1.05rem; margin:0; max-width:760px; }
+    main { padding:34px 18px 50px; }
+    .intro { background:#fff; border-left:8px solid var(--yellow); border-radius:12px; margin-bottom:26px; padding:18px 20px; }
+    .intro strong { color:var(--dark); }
+    section { margin:34px 0; }
+    h2 { color:var(--dark); font-size:1.45rem; margin:0 0 14px; }
+    .refs { display:grid; gap:10px; }
+    article { background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+    article h3 { color:var(--dark); font-size:1rem; line-height:1.35; margin:0 0 5px; }
+    article p { color:#606474; font-size:.88rem; margin:0 0 7px; }
+    a { color:var(--indigo); font-size:.84rem; overflow-wrap:anywhere; text-decoration:none; }
+    a:hover, a:focus { text-decoration:underline; }
+    .resource { border-left:5px solid var(--yellow); }
+    .dataset { border-left:5px solid var(--coral); }
+    footer { background:var(--dark); color:#fff; padding:25px 18px; }
+    footer p { font-size:.82rem; margin:0; }
+    @media (min-width:760px) { .refs { grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">ETC 2026 · HÉRAULT SCREEN</p>
+      <h1>Références de l’atelier HTS / HCS</h1>
+      <p>Qualité des données, normalisation, sélection des hits et analyse d’images en criblage à haut débit et à haut contenu.</p>
+    </div>
+  </header>
+  <main>
+    <div class="intro"><strong>26 ressources citées dans les diapositives.</strong> Les liens ci-dessous conduisent directement aux articles, chapitres méthodologiques et collections d’images utilisés pendant l’atelier.</div>
+
+    <section>
+      <h2>1. Qualité des essais et plan expérimental</h2>
+      <div class="refs">
+        <article><h3>Zhang, Chung &amp; Oldenburg (1999)</h3><p>A Simple Statistical Parameter for Use in Evaluation and Validation of High Throughput Screening Assays.</p><a href="https://doi.org/10.1177/108705719900400206">doi:10.1177/108705719900400206</a></article>
+        <article><h3>Zhang (2007)</h3><p>A pair of new statistical parameters for quality control in RNA interference high-throughput screening assays.</p><a href="https://doi.org/10.1016/j.ygeno.2006.12.014">doi:10.1016/j.ygeno.2006.12.014</a></article>
+        <article><h3>Lazic (2010)</h3><p>The problem of pseudoreplication in neuroscientific studies: is it affecting your analysis?</p><a href="https://doi.org/10.1186/1471-2202-11-5">doi:10.1186/1471-2202-11-5</a></article>
+        <article><h3>Lazic, Clarke-Williams &amp; Munafò (2018)</h3><p>What exactly is ‘N’ in cell culture and animal experiments?</p><a href="https://doi.org/10.1371/journal.pbio.2005282">doi:10.1371/journal.pbio.2005282</a></article>
+        <article class="resource"><h3>Assay Guidance Manual</h3><p>Chapitre consacré au facteur Z′ et à l’évaluation de la qualité des essais.</p><a href="https://www.ncbi.nlm.nih.gov/books/NBK83783/">NCBI Bookshelf NBK83783</a></article>
+        <article class="resource"><h3>Assay Guidance Manual — ressource générale</h3><p>Collection de recommandations pour le développement, l’analyse et la confirmation des essais.</p><a href="https://www.ncbi.nlm.nih.gov/books/NBK53196/">NCBI Bookshelf NBK53196</a></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Normalisation, sélection des hits et multiplicité</h2>
+      <div class="refs">
+        <article><h3>Brideau et al. (2003)</h3><p>Improved Statistical Methods for Hit Selection in High-Throughput Screening.</p><a href="https://doi.org/10.1177/1087057103258285">doi:10.1177/1087057103258285</a></article>
+        <article><h3>Birmingham et al. (2009)</h3><p>Statistical methods for analysis of high-throughput RNA interference screens.</p><a href="https://doi.org/10.1038/nmeth.1351">doi:10.1038/nmeth.1351</a></article>
+        <article><h3>Benjamini &amp; Hochberg (1995)</h3><p>Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.</p><a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x">doi:10.1111/j.2517-6161.1995.tb02031.x</a></article>
+        <article><h3>Mangat et al. (2014)</h3><p>Rank Ordering Plate Data Facilitates Data Visualization and Normalization in High-Throughput Screening.</p><a href="https://doi.org/10.1177/1087057114534298">doi:10.1177/1087057114534298</a></article>
+        <article><h3>Mpindi et al. (2015)</h3><p>Impact of Normalization Methods on High-Throughput Screening Data with High Hit Rates and Drug Testing with Dose–Response Data.</p><a href="https://doi.org/10.1093/bioinformatics/btv455">doi:10.1093/bioinformatics/btv455</a></article>
+        <article class="resource"><h3>Assay Guidance Manual</h3><p>Chapitre méthodologique sur l’analyse et la normalisation des données de criblage.</p><a href="https://www.ncbi.nlm.nih.gov/books/NBK126174/">NCBI Bookshelf NBK126174</a></article>
+        <article class="resource"><h3>Assay Guidance Manual</h3><p>Chapitre méthodologique sur la sélection, la validation et la confirmation des hits.</p><a href="https://www.ncbi.nlm.nih.gov/books/NBK615088/">NCBI Bookshelf NBK615088</a></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. HCS, segmentation et profils morphologiques</h2>
+      <div class="refs">
+        <article><h3>Carpenter et al. (2006)</h3><p>CellProfiler: image analysis software for identifying and quantifying cell phenotypes.</p><a href="https://doi.org/10.1186/gb-2006-7-10-r100">doi:10.1186/gb-2006-7-10-r100</a></article>
+        <article><h3>Hill et al. (2007)</h3><p>Impact of image segmentation on high-content screening data quality for SK-BR-3 cells.</p><a href="https://doi.org/10.1186/1471-2105-8-340">doi:10.1186/1471-2105-8-340</a></article>
+        <article><h3>Bray et al. (2012)</h3><p>Workflow and Metrics for Image Quality Control in Large-Scale High-Content Screens.</p><a href="https://doi.org/10.1177/1087057111420292">doi:10.1177/1087057111420292</a></article>
+        <article><h3>Ljosa et al. (2013)</h3><p>Comparison of Methods for Image-Based Profiling of Cellular Morphological Responses to Small-Molecule Treatment.</p><a href="https://doi.org/10.1177/1087057113503553">doi:10.1177/1087057113503553</a></article>
+        <article><h3>Bray et al. (2016)</h3><p>Cell Painting, a high-content image-based assay for morphological profiling using multiplexed fluorescent dyes.</p><a href="https://doi.org/10.1038/nprot.2016.105">doi:10.1038/nprot.2016.105</a></article>
+        <article><h3>Caicedo et al. (2017)</h3><p>Data-analysis strategies for image-based cell profiling.</p><a href="https://doi.org/10.1038/nmeth.4397">doi:10.1038/nmeth.4397</a></article>
+        <article><h3>Caicedo et al. (2019)</h3><p>Nucleus segmentation across imaging experiments: the 2018 Data Science Bowl.</p><a href="https://doi.org/10.1038/s41592-019-0612-7">doi:10.1038/s41592-019-0612-7</a></article>
+        <article><h3>Cimini et al. (2023)</h3><p>Optimizing the Cell Painting assay for image-based profiling.</p><a href="https://doi.org/10.1038/s41596-023-00840-9">doi:10.1038/s41596-023-00840-9</a></article>
+        <article><h3>Arevalo et al. (2024)</h3><p>Evaluating batch correction methods for image-based cell profiling.</p><a href="https://doi.org/10.1038/s41467-024-50613-5">doi:10.1038/s41467-024-50613-5</a></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Collections d’images utilisées</h2>
+      <div class="refs">
+        <article class="dataset"><h3>Broad Bioimage Benchmark Collection</h3><p>Collection ouverte de jeux d’images annotés pour l’évaluation des méthodes d’analyse.</p><a href="https://bbbc.broadinstitute.org/">bbbc.broadinstitute.org</a></article>
+        <article class="dataset"><h3>BBBC006</h3><p>Images de cellules utilisées pour illustrer la mise au point et le contrôle qualité.</p><a href="https://bbbc.broadinstitute.org/BBBC006">bbbc.broadinstitute.org/BBBC006</a></article>
+        <article class="dataset"><h3>BBBC022</h3><p>Images multicanales de Cell Painting utilisées pour illustrer les données brutes HCS.</p><a href="https://bbbc.broadinstitute.org/BBBC022">bbbc.broadinstitute.org/BBBC022</a></article>
+        <article class="dataset"><h3>BBBC038</h3><p>Images et annotations de noyaux issues du Data Science Bowl 2018.</p><a href="https://bbbc.broadinstitute.org/BBBC038">bbbc.broadinstitute.org/BBBC038</a></article>
+      </div>
+    </section>
+  </main>
+  <footer><div><p>Atelier ETC 2026 — Analyses statistiques HTS / HCS. Dernière mise à jour : septembre 2026.</p></div></footer>
+</body>
+</html>
