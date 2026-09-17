@@ -6,7 +6,7 @@ interactifs anonymes.
 ## Pages publiques
 
 - Bibliographie : https://cedrichk.github.io/ETC2026/
-- Présentation : https://cedrichk.github.io/ETC2026/presntation.html
+- Présentation : https://cedrichk.github.io/ETC2026/presentation.html
 - Vote anonyme : https://cedrichk.github.io/ETC2026/vote.html
 - Tableau de bord formateur : https://cedrichk.github.io/ETC2026/admin.html
 
