@@ -1,6 +1,6 @@
 # ETC 2026 — Atelier HTS / HCS
 
-Page publique regroupant la bibliographie, les dipositives de l’atelier et son système de QCM
+Page publique regroupant la bibliographie, les diapositives de l’atelier et son système de QCM
 interactifs anonymes.
 
 ## Pages publiques
